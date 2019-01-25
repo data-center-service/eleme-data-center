@@ -1,5 +1,11 @@
 FROM keymetrics/pm2:8-alpine as builder
 MAINTAINER  zhouyu muyu.zhouyu@gmail.com
+COPY src src/
+COPY config config/
+COPY package.json .
+COPY package-lock.json .
+COPY tsconfig.json .
+COPY tsconfig.build.json .
 RUN npm install
 RUN npm run build
 
