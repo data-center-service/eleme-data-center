@@ -11,8 +11,8 @@ RUN npm run build
 
 FROM keymetrics/pm2:8-alpine
 MAINTAINER zhouyu muyu.zhouyu@gmail.com 
-COPY --from=builder /dist /
-COPY --from=builder /config /
-COPY --from=builder /node_modules /
-COPY --from=builder /package-lock.json /
+COPY --from=builder dist dist/
+COPY --from=builder config config/
+COPY --from=builder node_modules node_modules/
+COPY --from=builder package-lock.json .
 ENTRYPOINT pm2-runtime /dist/main.js
