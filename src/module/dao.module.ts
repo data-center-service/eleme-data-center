@@ -3,15 +3,21 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ShopDao } from '../dao/shop.dao';
 import { MenuDao } from '../dao/menu.dao';
 import { FoodDao } from '../dao/food.dao';
+import { ConfigService } from '../provider/config/config.service';
 
 @Module({
     imports: [
-        TypeOrmModule.forRoot({
-            type: 'mongodb',
-            host: 'localhost',
-            port: 27017,
-            database: 'eleme-data-center',
-            entities: [__dirname + '/../model/**/*.model{.ts,.js}'],
+        TypeOrmModule.forRootAsync({
+            useFactory: (configService: ConfigService) => {
+                return {
+                    type: 'mongodb',
+                    host: configService.get('MONGO_HOST'),
+                    port: configService.MONGO_PORT,
+                    database: configService.get('MONGO_DB'),
+                    entities: [__dirname + '/../model/**/*.model{.ts,.js}'],
+                };
+            },
+            inject: [ConfigService],
         }),
     ],
     providers: [ShopDao, MenuDao, FoodDao],

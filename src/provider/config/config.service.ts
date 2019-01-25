@@ -9,6 +9,10 @@ export class ConfigService {
         this.envConfig = dotenv.parse(fs.readFileSync(filePath));
     }
 
+    get MONGO_PORT(): number {
+        return Number(this.envConfig.MONGO_PORT);
+    }
+
     get(key: string): string {
         const env = process.env[key];
         if (env) return env;
@@ -16,3 +20,5 @@ export class ConfigService {
     }
 
 }
+
+export const ConfigStaticService = new ConfigService('config/default.env');

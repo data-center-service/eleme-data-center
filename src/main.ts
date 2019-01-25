@@ -3,13 +3,14 @@ import { AppModule } from './module/app.module';
 import { Transport } from '@nestjs/common/enums/transport.enum';
 import { CronJob } from 'cron';
 import { ShopService } from './service/shop.service';
+import { ConfigStaticService } from './provider/config/config.service';
 
 async function bootstrap() {
     const app = await NestFactory.createMicroservice(AppModule, {
         transport: Transport.RMQ,
         options: {
-            urls: ['amqp://hdjashdj3ufduy26623g:das32fDDSG8^&8d9)&!@7dudfggfs6ad8a2gYGUSGDiydsa89d67823du3d@47.101.132.189:5672'],
-            queue: 'eleme-data-center',
+            urls: ConfigStaticService.get('AMQP_URL'),
+            queue: ConfigStaticService.get('AMQP_QUEUE'),
             queueOptions: { durable: true },
             prefetchCount: 5,
         },
@@ -18,7 +19,7 @@ async function bootstrap() {
 
     const shopService = app.get(ShopService);
 
-    new CronJob('0 0 2 * * *', async () => {
+    new CronJob(ConfigStaticService.get('CRON'), async () => {
         const locations = [
             { latitude: 31.217404, longitude: 121.532286 },
             { latitude: 31.1717847814, longitude: 121.5623741547 },
