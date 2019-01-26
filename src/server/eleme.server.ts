@@ -40,7 +40,7 @@ export class ElemeServer {
         return res.data;
     }
 
-    public async getFoods(openShopId: number): Promise<IEleme.Food[]> {
+    public async getFoods(openShopId: string): Promise<IEleme.Food[]> {
         const menus = await this.getMenus(openShopId);
         let foods: IEleme.Food[] = [];
         for (const menu of menus) {
@@ -49,7 +49,7 @@ export class ElemeServer {
         return foods;
     }
 
-    public async getMenus(openShopId: number): Promise<IEleme.Menu[]> {
+    public async getMenus(openShopId: string): Promise<IEleme.Menu[]> {
         $.sleep(1000);
 
         const url = 'https://www.ele.me/restapi/shopping/v2/menu';

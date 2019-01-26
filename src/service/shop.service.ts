@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { IEleme } from '../interface/eleme.interface';
 import { FoodService } from './food.service';
 import { ElemeServer } from '../server/eleme.server';
@@ -8,6 +8,7 @@ import { ShopCreateDto } from '../dto/shop.dto';
 import * as dayjs from '../util/dayjs.util';
 import * as _ from '../util/lodash.util';
 import { Shop } from '../model/shop.model';
+import { OutputGetShopFlavorsDto } from '../dto/output.dto';
 
 @Injectable()
 export class ShopService {
@@ -21,13 +22,13 @@ export class ShopService {
     public async bulkCreate(dto: ShopCreateDto) {
         const day = dayjs().format('YYYY-MM-DD');
 
-        console.log(`开始处理 ${day} 的 Shop`);
+        Logger.log(`开始处理 ${day} 的 Shop`);
 
         let elemeShops: IEleme.Shop[] = [];
         let count = 1;
         do {
             elemeShops = await this.elemeServer.getShops(dto, count * 30, (count - 1) * 30);
-            console.log(`第${count}次, 开始处理 ${elemeShops.length}个店`);
+            Logger.log(`第${count}次, 开始处理 ${elemeShops.length}个店`);
 
             const shops: Shop[] = [];
             for (const elemeShop of elemeShops) {
@@ -54,7 +55,19 @@ export class ShopService {
             await this.foodService.bulkCreateByShop(shops);
         } while (!_.isEmpty(elemeShops));
 
-        console.log(`${day} 的数据处理完毕`);
+        Logger.log(`${day} 的数据处理完毕`);
+    }
+
+    public async getShopFlavors(query: OutputGetShopFlavorsDto) {
+        const shops = await this.shopDao.findAll();
+        const uniqShops = _.uniqBy(shops, 'name');
+        const shopFlavors = _.reduce(uniqShops, (result: string[], shop: Shop) => {
+            const flavors: { id: number, name: string }[] | undefined = _.get(shop, 'data.flavors');
+            if (!flavors) return result;
+            result.push(...flavors.map(v => v.name));
+            return result;
+        }, []);
+        return _.countBy(shopFlavors);
     }
 
 }

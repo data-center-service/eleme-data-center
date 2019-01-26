@@ -24,7 +24,7 @@ export class ShopDao {
         });
     }
 
-    public async findAll(option: FindOneOptions<Shop>) {
+    public async findAll(option?: FindOneOptions<Shop>) {
         return this.connection.getMongoRepository(Shop).find(option);
     }
 

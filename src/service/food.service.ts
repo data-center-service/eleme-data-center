@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Shop } from '../model/shop.model';
 import { ElemeServer } from '../server/eleme.server';
 import { FoodDao } from '../dao/food.dao';
@@ -17,7 +17,7 @@ export class FoodService {
         const tasks: Promise<any>[] = [];
         const day = dayjs().format('YYYY-MM-DD');
 
-        console.log(`开始处理 ${day} 的 Food, ${shops.length}个店`);
+        Logger.log(`开始处理 ${day} 的 Food, ${shops.length}个店`);
 
         for (const shop of shops) {
             const foods = await this.elemeServer.getFoods(shop.openId);
@@ -35,7 +35,7 @@ export class FoodService {
                     });
                 tasks.push(task);
             }
-            console.log(`处理 ${shop.name} Food`);
+            Logger.log(`处理 ${shop.name} Food`);
         }
         return Promise.all(tasks);
     }

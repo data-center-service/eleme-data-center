@@ -7,7 +7,7 @@ export class Shop {
     id: ObjectID;
 
     @Column()
-    openId: number;
+    openId: string;
 
     @Column()
     name: string;

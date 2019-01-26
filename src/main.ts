@@ -6,7 +6,11 @@ import { ShopService } from './service/shop.service';
 import { ConfigStaticService } from './provider/config/config.service';
 
 async function bootstrap() {
-    const app = await NestFactory.createMicroservice(AppModule, {
+    const app = await NestFactory.create(AppModule, {
+        cors:false,
+        bodyParser: true,
+    });
+    app.connectMicroservice({
         transport: Transport.RMQ,
         options: {
             urls: ConfigStaticService.get('AMQP_URL'),
@@ -15,7 +19,8 @@ async function bootstrap() {
             prefetchCount: 5,
         },
     });
-    await app.listenAsync();
+    await app.startAllMicroservicesAsync();
+    await app.listenAsync(ConfigStaticService.PORT);
 
     const shopService = app.get(ShopService);
 

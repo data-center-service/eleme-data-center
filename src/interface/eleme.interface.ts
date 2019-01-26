@@ -105,7 +105,7 @@ export namespace IEleme {
         'float_delivery_fee': number;
         'float_minimum_order_amount': number;
         'has_story': boolean;
-        'id': number;
+        'id': string;
         // 可能是 LOGO 地址, eleme接口
         'image_path': string;
         'is_new': boolean;

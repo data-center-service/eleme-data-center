@@ -1,5 +1,6 @@
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
+import { Logger } from '@nestjs/common';
 
 export class ConfigService {
 
@@ -9,13 +10,17 @@ export class ConfigService {
         try {
             this.envConfig = dotenv.parse(fs.readFileSync(filePath));
         } catch (e) {
-            console.log('env文件读取失败');
+            Logger.log('env文件读取失败');
             this.envConfig = {};
         }
     }
 
     get MONGO_PORT(): number {
         return Number(this.get('MONGO_PORT'));
+    }
+
+    get PORT(): number {
+        return Number(this.get('PORT'));
     }
 
     get(key: string): string {
