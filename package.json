@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "start": "ts-node src/main.ts",
+    "start": "export NODE_ENV=dev && ts-node src/main.ts",
     "prebuild": "rimraf dist",
     "test": "jest",
     "test:cov": "jest --coverage"
@@ -17,6 +17,7 @@
     "@nestjs/jwt": "^0.2.1",
     "@nestjs/microservices": "^5.4.0",
     "@nestjs/passport": "^5.1.0",
+    "@nestjs/swagger": "^2.5.1",
     "@nestjs/typeorm": "^5.2.2",
     "amqp-connection-manager": "^2.3.0",
     "amqplib": "^0.5.3",

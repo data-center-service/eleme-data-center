@@ -7,7 +7,7 @@ import { ShopCreateDto } from '../dto/shop.dto';
 import * as dayjs from '../util/dayjs.util';
 import * as _ from '../util/lodash.util';
 import { Shop } from '../model/shop.model';
-import { OutputGetShopFlavorsQueryDto } from '../dto/output.dto';
+import { OutputGetShopFlavorsQueryDto, OutputGetShopFlavorsResDto } from '../dto/output.dto';
 
 @Injectable()
 export class ShopService {
@@ -55,7 +55,7 @@ export class ShopService {
         Logger.log(`${day} 的数据处理完毕`);
     }
 
-    public async getShopFlavors(query: OutputGetShopFlavorsQueryDto) {
+    public async getShopFlavors(query: OutputGetShopFlavorsQueryDto): Promise<OutputGetShopFlavorsResDto[]> {
         const shops = await this.shopDao.findAll({
             where: {
                 $and: [
@@ -77,7 +77,16 @@ export class ShopService {
             result.push(...flavors.map(v => v.name));
             return result;
         }, []);
-        return _.countBy(shopFlavors);
+
+        const resObj = _.countBy(shopFlavors);
+        const res: OutputGetShopFlavorsResDto[] = [];
+        for (const flavorName in resObj) {
+            res.push({
+                flavorName,
+                count: resObj[flavorName],
+            });
+        }
+        return res;
     }
 
 }
