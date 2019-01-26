@@ -15,6 +15,8 @@ import { ConfigService } from '../provider/config/config.service';
                     port: configService.MONGO_PORT,
                     database: configService.get('MONGO_DB'),
                     entities: [__dirname + '/../model/**/*.model{.ts,.js}'],
+                    useNewUrlParser: true,
+                    loggerLevel: 'debug',
                 };
             },
             inject: [ConfigService],

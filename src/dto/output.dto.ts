@@ -1,15 +1,15 @@
-import { IsString, IsInt, IsIn, IsNumber, Max, Min, IsDefined } from 'class-validator';
+import { IsString, IsInt, IsIn, IsNumber, Max, Min, IsDefined, IsNumberString } from 'class-validator';
 
-export class OutputLocatinoPointDto {
+export class OutputLocatinoPointQueryDto {
 
-    @IsDefined() @IsNumber()
-    readonly latitude: number;
+    @IsDefined() @IsNumberString()
+    readonly latitude: string;
 
-    @IsDefined() @IsNumber()
-    readonly longitude: number;
+    @IsDefined() @IsNumberString()
+    readonly longitude: string;
 
 }
 
-export class OutputGetShopFlavorsDto extends OutputLocatinoPointDto {
+export class OutputGetShopFlavorsQueryDto extends OutputLocatinoPointQueryDto {
 
 }

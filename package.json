@@ -20,6 +20,7 @@
     "@nestjs/typeorm": "^5.2.2",
     "amqp-connection-manager": "^2.3.0",
     "amqplib": "^0.5.3",
+    "class-transformer": "^0.2.0",
     "class-validator": "^0.9.1",
     "cron": "^1.6.0",
     "dayjs": "^1.8.0",
