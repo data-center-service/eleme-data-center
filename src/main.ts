@@ -5,6 +5,7 @@ import { CronJob } from 'cron';
 import { ShopService } from './service/shop.service';
 import { ConfigStaticService } from './provider/config/config.service';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
 
@@ -24,6 +25,11 @@ async function bootstrap() {
             queueOptions: { durable: true },
             prefetchCount: 5,
         },
+    });
+
+    app.use((req, res, next) => {
+        Logger.log(req.url);
+        next();
     });
 
     /**

@@ -3,11 +3,10 @@ import { IEleme } from '../interface/eleme.interface';
 import { FoodService } from './food.service';
 import { ElemeServer } from '../server/eleme.server';
 import { ShopDao } from '../dao/shop.dao';
-import { ShopCreateDto } from '../dto/shop.dto';
+import { ShopCreateDto, ShopFlavorsResDto, ShopFlavorsQueryDto } from '../dto/shop.dto';
 import * as dayjs from '../util/dayjs.util';
 import * as _ from '../util/lodash.util';
 import { Shop } from '../model/shop.model';
-import { OutputGetShopFlavorsQueryDto, OutputGetShopFlavorsResDto } from '../dto/output.dto';
 
 @Injectable()
 export class ShopService {
@@ -55,7 +54,7 @@ export class ShopService {
         Logger.log(`${day} 的数据处理完毕`);
     }
 
-    public async getShopFlavors(query: OutputGetShopFlavorsQueryDto): Promise<OutputGetShopFlavorsResDto[]> {
+    public async getShopFlavors(query: ShopFlavorsQueryDto): Promise<ShopFlavorsResDto[]> {
         const shops = await this.shopDao.findAll({
             where: {
                 $and: [
@@ -79,7 +78,7 @@ export class ShopService {
         }, []);
 
         const resObj = _.countBy(shopFlavors);
-        const res: OutputGetShopFlavorsResDto[] = [];
+        const res: ShopFlavorsResDto[] = [];
         for (const flavorName in resObj) {
             res.push({
                 flavorName,
