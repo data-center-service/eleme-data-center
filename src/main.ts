@@ -49,7 +49,7 @@ async function bootstrap() {
             .setTitle('饿了么数据中心')
             .setDescription('抓取并处理饿了么数据')
             .setVersion('1.0')
-            .setBasePath('/apis/eleme')
+            .setBasePath('/eleme')
             .build();
         const document = SwaggerModule.createDocument(app, options);
         SwaggerModule.setup('docs', app, document);
