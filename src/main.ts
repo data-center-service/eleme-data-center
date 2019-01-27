@@ -60,15 +60,22 @@ async function bootstrap() {
      */
 
     const shopService = app.get(ShopService);
-    new CronJob(ConfigStaticService.get('CRON'), async () => {
-        const locations = [
-            { latitude: 31.217404, longitude: 121.532286 },
-            { latitude: 31.1717847814, longitude: 121.5623741547 },
-        ];
-        for (const location of locations) {
-            await shopService.bulkCreate(location);
-        }
-    }, undefined, true, 'Asia/Shanghai');
+    // new CronJob(ConfigStaticService.get('CRON'), async () => {
+    //     const locations = [
+    //         { latitude: 31.217404, longitude: 121.532286 },
+    //         { latitude: 31.1717847814, longitude: 121.5623741547 },
+    //     ];
+    //     for (const location of locations) {
+    //         await shopService.bulkCreate(location);
+    //     }
+    // }, undefined, true, 'Asia/Shanghai');
+    const locations = [
+        { latitude: 31.217404, longitude: 121.532286 },
+        { latitude: 31.1717847814, longitude: 121.5623741547 },
+    ];
+    for (const location of locations) {
+        await shopService.bulkCreate(location);
+    }
 
     /**
      * 启动

@@ -1,14 +1,21 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Connection, FindOneOptions, FindManyOptions } from 'typeorm';
 import { Shop } from '../model/shop.model';
 import { IType } from '../interface/type.interface';
 
 @Injectable()
-export class ShopDao {
+export class ShopDao implements OnModuleInit {
 
     constructor(
         private readonly connection: Connection,
     ) { }
+
+    async onModuleInit() {
+        await this.connection.getMongoRepository(Shop).createCollectionIndex({
+            day: -1,
+            openId: 1,
+        });
+    }
 
     public async create(data: Shop) {
         return this.connection.getMongoRepository(Shop).insertOne(data);

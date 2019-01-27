@@ -17,10 +17,10 @@ export class FoodService {
         const tasks: Promise<any>[] = [];
         const day = dayjs().format('YYYY-MM-DD');
 
-        Logger.log(`开始处理 ${day} 的 Food, ${shops.length}个店`);
-
         for (const shop of shops) {
             const foods = await this.elemeServer.getFoods(shop.openId);
+            Logger.log(`开始处理 ${shop.name} 的 Food, ${foods.length}个`);
+
             for (const food of foods) {
                 const task = this.foodDao.upsert({
                     shopId: shop.id.toString(),
@@ -35,7 +35,7 @@ export class FoodService {
                     });
                 tasks.push(task);
             }
-            Logger.log(`处理 ${shop.name} Food`);
+            Logger.log(`处理完成 ${shop.name} Food`);
         }
         return Promise.all(tasks);
     }
