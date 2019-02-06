@@ -6,6 +6,7 @@ import { ShopService } from './service/shop.service';
 import { ConfigStaticService } from './provider/config/config.service';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Logger } from '@nestjs/common';
+import Eureka from 'eureka-js-client';
 
 async function bootstrap() {
 
@@ -79,4 +80,34 @@ async function bootstrap() {
 
 }
 
+function bootstrapEureka() {
+    const client = new Eureka({
+        instance: {
+            app: 'eleme',
+            hostName: 'localhost',
+            ipAddr: '127.0.0.1',
+            vipAddress: '127.0.0.1',
+            port: {
+                '$': ConfigStaticService.PORT,
+                '@enabled': true,
+            },
+            dataCenterInfo: {
+                '@class': 'com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo',
+                'name': 'MyOwn',
+            },
+        },
+        eureka: {
+            host: ConfigStaticService.get('EUREKA_HOST'),
+            port: ConfigStaticService.EUREKA_PORT,
+            servicePath: '/eureka/apps/',
+        },
+    });
+
+    client.logger.level('debug');
+    client.start(error => {
+        console.log(error || 'complete');
+    });
+}
+
 bootstrap();
+bootstrapEureka();
