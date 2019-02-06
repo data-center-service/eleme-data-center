@@ -19,10 +19,6 @@ export class ConfigService {
         return Number(this.get('MONGO_PORT'));
     }
 
-    get EUREKA_PORT(): number {
-        return Number(this.get('EUREKA_PORT'));
-    }
-
     get PORT(): number {
         return Number(this.get('PORT'));
     }
